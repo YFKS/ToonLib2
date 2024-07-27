@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.toonlib'
@@ -8,10 +9,31 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+publishing{
+    publications{
+        mavenJava(MavenPublication){
+            artifactId = "toonlib3"
+            from(components.java)
+        }
+    }
+    repositories {
+        maven {
+            name = "pack"
+            url = uri("https://github.com/YFKS/ToonLib3")
+            credentials{
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+    }
+}
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0-rc2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0-rc2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0-rc2'
 }
 
 test {
