@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.toonlib'
-version = '0.2-TEST'
+version = '0.3-TEST'
 
 repositories {
     mavenCentral()
@@ -36,6 +36,18 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0-rc2'
 }
 
+wrapper {
+    gradleVersion = '8.5'
+}
+
 test {
     useJUnitPlatform()
+}
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+tasks.withType(JavaCompile) {
+    options.fork = true
 }
