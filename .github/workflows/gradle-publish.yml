@@ -20,37 +20,42 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-    - name: Build with Gradle
-      run: chmod +x ./gradlew
-      working-directory: .
 
-    - name: Build start with Gradle
-      uses: gradle/gradle-build-action@417ae3ccd767c252f5661f1ace9f835f9654f2b5
-      with:
-        arguments: build
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+        working-directory: .
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@417ae3ccd767c252f5661f1ace9f835f9654f2b5
+        with:
+          arguments: build
+
+      - name: List Directories
+        run: ls -l
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      uses: gradle/gradle-build-action@417ae3ccd767c252f5661f1ace9f835f9654f2b5
-      with:
-        arguments: publish  --debug
-        cache-disabled: false
-        cache-read-only: true
-        cache-write-only: false
-        gradle-home-cache-includes: caches
-        generate-job-summary: true
-        gradle-home-cache-strict-match: false
-        workflow-job-context: null
-      env:
-        USERNAME: ${{ github.repository_owner}}
-        TOKEN: ${{ secrets.TOKEN }}
+      # the publishing section of your build.gradle
+      - name: Publish to GitHub Packages
+        uses: gradle/gradle-build-action@417ae3ccd767c252f5661f1ace9f835f9654f2b5
+        with:
+          arguments: publish  --debug
+          cache-disabled: false
+          cache-read-only: true
+          cache-write-only: false
+          gradle-home-cache-includes: caches
+          generate-job-summary: true
+          gradle-home-cache-strict-match: false
+          workflow-job-context: null
+        env:
+          USERNAME: ${{ github.repository_owner}}
+          TOKEN: ${{ secrets.TOKEN }}
+
