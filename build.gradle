@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.toonlib'
-version = '0.0-TEST'
+version = '0.2-TEST'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ publishing{
     repositories {
         maven {
             name = "pack"
-            url = uri("https://github.com/YFKS/ToonLib3")
+            url = uri("https://maven.pkg.github.com/YFKS/ToonLib3")
             credentials{
                 username = System.getenv("USERNAME")
                 password = System.getenv("TOKEN")
